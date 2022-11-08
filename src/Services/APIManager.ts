@@ -14,7 +14,10 @@ export class APIManager {
         this.port = port;
     }
 
-    init() {
+    /**
+     * Init the API
+     */
+    init(): void {
         this.app = express();
         this.routerApiV1 = express.Router();
         this.app.listen(this.port, () => {
@@ -22,20 +25,32 @@ export class APIManager {
         });
     }
 
-    appRegisterBuild() {
+    /**
+     * Register every route saved
+     * Add an handler for every unknow routes
+     */
+    appRegisterBuild(): void {
         this.app.use("/api", this.routerApiV1);
         this.app.all('*', (req: Request, res: Response, next: NextFunction) => {
             return res.status(500).json({ 'error': "Internal error" });
         })
     }
 
-    addController(controller: Controller) {
+    /**
+     * Add a controller to the API
+     * @param controller 
+     */
+    addController(controller: Controller): void {
         controller.getRoutes().forEach( (route: Route) => {
             this.registerRouteInApiV1(route)
         });
     }
 
-    registerRouteInApiV1(route: Route) {
+    /**
+     * Register a new route in the API
+     * @param route 
+     */
+    registerRouteInApiV1(route: Route): void {
         console.log(`Register new route: ${route.toJson()}`);
         switch(route.getType()) {
             case HTTPRequest.GET:
@@ -61,5 +76,9 @@ export class APIManager {
         }
     }
 
-    getApp() { return this.app; }
+    /**
+     * Return the Express application
+     * @returns
+     */
+    getApp(): Express { return this.app; }
 }
