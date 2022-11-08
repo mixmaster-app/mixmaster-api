@@ -1,4 +1,4 @@
-import express, { Express, NextFunction, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response, Router } from "express";
 import { Controller } from "~/Utils/Controller";
 import { HTTPRequest } from "~/Utils/HTTPRequest";
 import { Route } from "../Utils/Route";
@@ -7,7 +7,7 @@ export class APIManager {
 
     port : number;
     app: Express;
-    swagger : string|undefined;
+    routerApiV1: Router;
     routes : Array<Route> = [];
 
     constructor( { port: port = 3000 } ) {
@@ -16,12 +16,14 @@ export class APIManager {
 
     init() {
         this.app = express();
+        this.routerApiV1 = express.Router();
         this.app.listen(this.port, () => {
             console.log(`Server running on port ${ this.port }`);
         });
     }
 
-    registerEveryUnknownRoutes() {
+    appRegisterBuild() {
+        this.app.use("/api", this.routerApiV1);
         this.app.all('*', (req: Request, res: Response, next: NextFunction) => {
             return res.status(500).json({ 'error': "Internal error" });
         })
@@ -29,26 +31,32 @@ export class APIManager {
 
     addController(controller: Controller) {
         controller.getRoutes().forEach( (route: Route) => {
-            this.registerRoute(route)
+            this.registerRouteInApiV1(route)
         });
     }
 
-    registerRoute(route: Route) {
+    registerRouteInApiV1(route: Route) {
         console.log(`Register new route: ${route.toJson()}`);
         switch(route.getType()) {
             case HTTPRequest.GET:
-                this.app.get(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
+                this.routerApiV1.get(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
                     return route.callback(req, res, next);
-                })
+                });
                 break;
             case HTTPRequest.PUT:
-                throw new Error("PUT Routes not handled");
+                this.routerApiV1.put(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
+                    return route.callback(req, res, next);
+                });
                 break;
             case HTTPRequest.POST:
-                throw new Error("POST Routes not handled");
+                this.routerApiV1.post(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
+                    return route.callback(req, res, next);
+                });
                 break;
             case HTTPRequest.DELETE:
-                throw new Error("DELETE Routes not handled");
+                this.routerApiV1.delete(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
+                    return route.callback(req, res, next);
+                });
                 break;
         }
     }

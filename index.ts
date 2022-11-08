@@ -14,4 +14,4 @@ API.init();
 const henchsHandler = new HenchController(API.getApp());
 API.addController(henchsHandler.getController());
 
-API.registerEveryUnknownRoutes();
+API.appRegisterBuild();
