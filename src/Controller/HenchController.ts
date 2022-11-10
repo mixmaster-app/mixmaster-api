@@ -20,6 +20,13 @@ export class HenchController extends AbstractController {
                 'type': HTTPRequest.GET,
                 'route': "/henchs",
                 'callback': this.getAll
+            }),
+            new Route({
+                'label': "GetAllPost",
+                'description': "Get every henchs post",
+                'type': HTTPRequest.POST,
+                'route': "/henchs",
+                'callback': this.getAll
             })
         ]);
         return henchController;

@@ -1,4 +1,5 @@
 import { Paths } from "swagger-jsdoc";
+import { Route } from "./Route";
 import { ExternalDocumentation } from "./Swagger/ExternalDocumentation";
 import { Info } from "./Swagger/Info";
 import { Path } from "./Swagger/Path";
@@ -47,8 +48,15 @@ export class Swagger {
     setTags(tags: Array<Tag>): Swagger { this.tags = tags; return this; }
     setExternalDocs(externalDocs: ExternalDocumentation): Swagger { this.externalDocs = externalDocs; return this; }
 
-    addPath(pathname: string, path: Path): Swagger {
-        this.paths[pathname] = path.getOperations();
+    addPath(route: Route, path: Path): Swagger {
+        const pathname = route.getRoute();
+        const routeType = route.getType();
+
+        if(!this.paths[pathname]) {
+            this.paths[pathname] = path.getOperations();
+        } else {
+            this.paths[pathname][routeType] = path.getOperations()[routeType];
+        }
         return this;
     }
 

@@ -13,11 +13,15 @@ export class Path {
     setoperations(operations: Operations): Path { this.operations = operations; return this; }
 
     addOperation(operationType: string, operation: Operation): Path {
-        this.operations[operationType.toLowerCase() as keyof Operations] = operation;
+        this.operations[operationType] = operation;
         return this;
     }
 }
 
-interface Operations {
-    name?: Operation
+export interface Operations {
+    [key: string]: Operation
+}
+
+export interface Paths {
+    [key: string]: Path;
 }

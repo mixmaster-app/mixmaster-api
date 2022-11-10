@@ -61,7 +61,6 @@ export class APIManager {
      * @param route
      */
     registerRouteInApiV1(route: Route): void {
-        console.log(`Register new route: ${route.toJson()}`);
         switch(route.getType()) {
             case HTTPRequest.GET:
                 this.routerApiV1.get(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
@@ -90,7 +89,7 @@ export class APIManager {
      * Register the swagger informations about the API
      */
     registerSwagger(): void {
-        // console.log(this.swaggerGenerator.build());
+        console.log(this.swaggerGenerator.build());
         const specs = swaggerJsdoc({
             definition: this.swaggerGenerator.build(),
             apis: []

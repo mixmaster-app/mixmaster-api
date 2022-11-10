@@ -20,7 +20,7 @@ export class SwaggerGenerator {
         const tag = ControllerToTag(controller);
         this.swagger.addTag(tag);
         controller.getRoutes().forEach( (route: Route) => {
-            this.swagger.addPath(route.getRoute(), RouteToPath(route, tag.getName()));
+            this.swagger.addPath(route, RouteToPath(route, tag.getName()));
         })
         return this;
     }

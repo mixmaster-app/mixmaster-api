@@ -19,7 +19,7 @@ export class Controller {
     setRoutes(routes: Array<Route>): Controller { this.routes = routes; return this; }
 
     addRoutes(routes: Array<Route>): Array<Route> {
-        this.routes = [...this.routes, ...routes];
+        routes.forEach( item => this.addRoute(item));
         return this.routes;
     }
 
