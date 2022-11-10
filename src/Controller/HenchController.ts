@@ -4,6 +4,7 @@ import { HTTPRequest } from "~/Utils/HTTPRequest";
 import { Route } from "~/Utils/Route";
 import { AbstractController } from "./AbstractController";
 
+const DESCRIPTION = "Get informations about henchs";
 export class HenchController extends AbstractController {
 
     constructor(app: Express) {
@@ -11,7 +12,7 @@ export class HenchController extends AbstractController {
     }
 
     getController(): Controller {
-        const henchController = new Controller(this.constructor.name);
+        const henchController = new Controller(this.swaggerTagName, DESCRIPTION);
         henchController.addRoutes([
             new Route({
                 'label': "GetAll",

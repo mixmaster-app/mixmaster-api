@@ -1,7 +1,10 @@
-import express, { Express, NextFunction, Request, Response, Router } from "express";
+import express, { Express, json, NextFunction, Request, Response, Router, urlencoded } from "express";
 import { Controller } from "~/Utils/Controller";
 import { HTTPRequest } from "~/Utils/HTTPRequest";
 import { Route } from "../Utils/Route";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
+import { SwaggerGenerator } from "./SwaggerGenerator";
 
 export class APIManager {
 
@@ -9,9 +12,11 @@ export class APIManager {
     app: Express;
     routerApiV1: Router;
     routes : Array<Route> = [];
+    swaggerGenerator: SwaggerGenerator;
 
     constructor( { port: port = 3000 } ) {
         this.port = port;
+        this.swaggerGenerator = new SwaggerGenerator();
     }
 
     /**
@@ -19,6 +24,9 @@ export class APIManager {
      */
     init(): void {
         this.app = express();
+        this.app.use(urlencoded({ extended: true }));
+        this.app.use(json());
+
         this.routerApiV1 = express.Router();
         this.app.listen(this.port, () => {
             console.log(`Server running on port ${ this.port }`);
@@ -29,7 +37,8 @@ export class APIManager {
      * Register every route saved
      * Add an handler for every unknow routes
      */
-    appRegisterBuild(): void {
+    run(): void {
+        this.registerSwagger();
         this.app.use("/api", this.routerApiV1);
         this.app.all('*', (req: Request, res: Response, next: NextFunction) => {
             return res.status(500).json({ 'error': "Internal error" });
@@ -38,17 +47,18 @@ export class APIManager {
 
     /**
      * Add a controller to the API
-     * @param controller 
+     * @param controller
      */
     addController(controller: Controller): void {
         controller.getRoutes().forEach( (route: Route) => {
             this.registerRouteInApiV1(route)
         });
+        this.swaggerGenerator.addController(controller);
     }
 
     /**
      * Register a new route in the API
-     * @param route 
+     * @param route
      */
     registerRouteInApiV1(route: Route): void {
         console.log(`Register new route: ${route.toJson()}`);
@@ -74,6 +84,25 @@ export class APIManager {
                 });
                 break;
         }
+    }
+
+    /**
+     * Register the swagger informations about the API
+     */
+    registerSwagger(): void {
+        // console.log(this.swaggerGenerator.build());
+        const specs = swaggerJsdoc({
+            definition: this.swaggerGenerator.build(),
+            apis: []
+        });
+        this.routerApiV1.use("/swagger.json", (req, res, next) => {
+            return res.send(specs);
+        });
+        this.routerApiV1.use(
+            "/swagger",
+            swaggerUi.serve,
+            swaggerUi.setup(specs)
+        );
     }
 
     /**

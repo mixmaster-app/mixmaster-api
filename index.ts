@@ -1,5 +1,6 @@
 import { APIManager } from "./src/Services/APIManager";
 import { HenchController } from "./src/Controller/HenchController";
+
 const CONFIG = {
     port: 3000
 };
@@ -14,4 +15,4 @@ API.init();
 const henchsHandler = new HenchController(API.getApp());
 API.addController(henchsHandler.getController());
 
-API.appRegisterBuild();
+API.run();
