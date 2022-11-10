@@ -1,4 +1,5 @@
 import { Express, NextFunction, Request, Response } from "express";
+import { log } from "~/Services/Logger";
 import { Controller } from "~/Utils/Controller";
 import { HTTPRequest } from "~/Utils/HTTPRequest";
 import { Route } from "~/Utils/Route";
@@ -20,20 +21,13 @@ export class HenchController extends AbstractController {
                 'type': HTTPRequest.GET,
                 'route': "/henchs",
                 'callback': this.getAll
-            }),
-            new Route({
-                'label': "GetAllPost",
-                'description': "Get every henchs post",
-                'type': HTTPRequest.POST,
-                'route': "/henchs",
-                'callback': this.getAll
             })
         ]);
         return henchController;
     }
 
     getAll(req: Request, res: Response, next: NextFunction) {
-        console.log("Get every henchs");
+        log.info("Get every henchs");
         return res.json(["A", "B"]);
     }
 }

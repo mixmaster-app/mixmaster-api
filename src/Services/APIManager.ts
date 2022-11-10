@@ -5,6 +5,7 @@ import { Route } from "../Utils/Route";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { SwaggerGenerator } from "./SwaggerGenerator";
+import { log } from "./Logger";
 
 export class APIManager {
 
@@ -29,7 +30,7 @@ export class APIManager {
 
         this.routerApiV1 = express.Router();
         this.app.listen(this.port, () => {
-            console.log(`Server running on port ${ this.port }`);
+            log.info(`Server running on port ${ this.port }`);
         });
     }
 
@@ -89,7 +90,7 @@ export class APIManager {
      * Register the swagger informations about the API
      */
     registerSwagger(): void {
-        console.log(this.swaggerGenerator.build());
+        // console.log(this.swaggerGenerator.build());
         const specs = swaggerJsdoc({
             definition: this.swaggerGenerator.build(),
             apis: []
