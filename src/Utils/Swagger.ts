@@ -1,4 +1,5 @@
 import { Paths } from "swagger-jsdoc";
+import { Config } from "~/config/Config";
 import { Route } from "./Route";
 import { ExternalDocumentation } from "./Swagger/ExternalDocumentation";
 import { Info } from "./Swagger/Info";
@@ -20,10 +21,10 @@ export class Swagger {
 
     constructor() {
         this.info = (new Info())
-            .setTitle("mixmaster-api")
-            .setVersion("1.0.0")
-            .setDescription("API of the game mixmaster <a href='https://mixmaster-online.fr'>https://mixmaster-online.fr</a>");
-        this.openapi = "3.0.0";
+            .setTitle(Config.API.name)
+            .setVersion(Config.API.version)
+            .setDescription(Config.API.description);
+        this.openapi = Config.API.openapi;
         this.servers = [];
         this.servers.push(
             (new Server())

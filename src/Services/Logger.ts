@@ -1,14 +1,14 @@
 import { ILogObject, Logger } from "tslog";
-import { config } from "~/config/Config";
+import { Config } from "~/config/Config";
 import { appendFileSync, existsSync, mkdirSync } from "fs";
 import path from "path";
 
 function logToFile(logObject: ILogObject) {
-    if(config.Logger.doAppendToFile) {
-        if(!existsSync(config.Logger.logPath)) {
-            mkdirSync(path.resolve(config.Logger.logPath), { recursive: true });
+    if(Config.Logger.doAppendToFile) {
+        if(!existsSync(Config.Logger.logPath)) {
+            mkdirSync(path.resolve(Config.Logger.logPath), { recursive: true });
         }
-        appendFileSync(path.join(config.Logger.logPath, config.Logger.filename), `${JSON.stringify(logObject)}\n`);
+        appendFileSync(path.join(Config.Logger.logPath, Config.Logger.filename), `${JSON.stringify(logObject)}\n`);
     }
 }
 
@@ -18,7 +18,8 @@ export const log: Logger = new Logger({
     displayRequestId: false,
     displayFunctionName: false,
     displayFilePath: "hidden",
-    dateTimePattern: config.Logger.datePattern
+    dateTimePattern: Config.Logger.datePattern,
+    maskPlaceholder: "*****"
 });
 
 log.attachTransport(

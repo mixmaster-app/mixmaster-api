@@ -16,6 +16,7 @@ export class Controller {
     getDescription(): string { return this.description; }
     getRoutes(): Array<Route> { return this.routes; }
 
+    setDescription(description: string): Controller { this.description = description; return this; }
     setRoutes(routes: Array<Route>): Controller { this.routes = routes; return this; }
 
     addRoutes(routes: Array<Route>): Array<Route> {

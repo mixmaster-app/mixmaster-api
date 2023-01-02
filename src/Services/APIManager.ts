@@ -6,6 +6,9 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { SwaggerGenerator } from "./SwaggerGenerator";
 import { log } from "./Logger";
+import { HTTPStatus } from "~/Utils/HTTPStatus";
+
+export const DEFAULT_ERROR = { error: "Internal server error" };
 
 export class APIManager {
 
@@ -42,7 +45,7 @@ export class APIManager {
         this.registerSwagger();
         this.app.use("/api", this.routerApiV1);
         this.app.all('*', (req: Request, res: Response, next: NextFunction) => {
-            return res.status(500).json({ 'error': "Internal error" });
+            return res.status(HTTPStatus._500_INTERNAL_SERVER_ERROR).json(DEFAULT_ERROR);
         })
     }
 
@@ -57,6 +60,12 @@ export class APIManager {
         this.swaggerGenerator.addController(controller);
     }
 
+    addControllers(controllers: Array<Controller>): void {
+        controllers.forEach( (controller: Controller) => {
+            this.addController(controller);
+        })
+    }
+
     /**
      * Register a new route in the API
      * @param route
@@ -65,23 +74,16 @@ export class APIManager {
         switch(route.getType()) {
             case HTTPRequest.GET:
                 this.routerApiV1.get(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
-                    return route.callback(req, res, next);
+                    try {
+                        return route.callback(req, res, next);
+                    } catch(error) {
+                        log.error(`Error on route ${route.getRoute()}`, error);
+                        return res.status(HTTPStatus._500_INTERNAL_SERVER_ERROR).send(DEFAULT_ERROR);
+                    }
                 });
                 break;
-            case HTTPRequest.PUT:
-                this.routerApiV1.put(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
-                    return route.callback(req, res, next);
-                });
-                break;
-            case HTTPRequest.POST:
-                this.routerApiV1.post(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
-                    return route.callback(req, res, next);
-                });
-                break;
-            case HTTPRequest.DELETE:
-                this.routerApiV1.delete(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
-                    return route.callback(req, res, next);
-                });
+            default:
+                log.warn(`Unsupported route type ${ route.getType() } for route ${ route.getRoute() }`);
                 break;
         }
     }
