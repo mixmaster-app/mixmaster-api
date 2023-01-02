@@ -7,26 +7,6 @@ import { Item } from "~/Models/Item";
 import { Zone } from "~/Models/Zone";
 import { fusionEvolutions, fusionEvolutionsList } from "~/Services/Transformer/HenchTransformer";
 
-const HENCH_INCLUDE = {
-    model: Hench,
-    include: [
-        {
-            model: Zone,
-            as: "zones",
-            through: { attributes: [] }
-        },
-        {
-            model: HenchType,
-            as: "type",
-        },
-        {
-            model: HenchStats,
-            as: "stats",
-            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
-        },
-    ]
-};
-
 const REFERENCES = {
     include: [
         {
@@ -47,6 +27,7 @@ const REFERENCES = {
             model: HenchMix,
             as: "mix",
             attributes: [ "id" ],
+            separate: true,
             include: [
                 {
                     model: Hench,
@@ -122,6 +103,7 @@ const REFERENCES = {
             model: HenchMix,
             as: "evolutions_right",
             attributes: [ "id" ],
+            separate: true,
             include: [
                 {
                     model: Hench,
@@ -197,6 +179,7 @@ const REFERENCES = {
             model: HenchMix,
             as: "evolutions_left",
             attributes: [ "id" ],
+            separate: true,
             include: [
                 {
                     model: Hench,
