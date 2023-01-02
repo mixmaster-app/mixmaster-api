@@ -28,7 +28,7 @@ export class Swagger {
         this.servers = [];
         this.servers.push(
             (new Server())
-                .setUrl("/")
+                .setUrl("http://127.0.0.1:3000/api")
                 .setDescription("")
         );
         this.tags = [];
