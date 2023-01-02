@@ -30,10 +30,12 @@ export class ZoneController extends AbstractController {
     }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
-        log.info(`Get every henchs, ${req.url}`);
+        log.info(`Get every zones, ${req.url}`);
         try {
             return res.json(await ZoneDAO.findAll());
         } catch(e) {
+            log.error(`Error while requesting every zones, ${req.url}`);
+            log.error(e);
             return res.status(HTTPStatus._500_INTERNAL_SERVER_ERROR).send(DEFAULT_ERROR);
         }
     }

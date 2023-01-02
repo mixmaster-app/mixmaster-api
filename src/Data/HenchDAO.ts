@@ -5,8 +5,27 @@ import { HenchStats } from "~/Models/Henchs/HenchStats";
 import { HenchType } from "~/Models/Henchs/HenchType";
 import { Item } from "~/Models/Item";
 import { Zone } from "~/Models/Zone";
-import { log } from "~/Services/Logger";
 import { fusionEvolutions, fusionEvolutionsList } from "~/Services/Transformer/HenchTransformer";
+
+const HENCH_INCLUDE = {
+    model: Hench,
+    include: [
+        {
+            model: Zone,
+            as: "zones",
+            through: { attributes: [] }
+        },
+        {
+            model: HenchType,
+            as: "type",
+        },
+        {
+            model: HenchStats,
+            as: "stats",
+            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+        },
+    ]
+};
 
 const REFERENCES = {
     include: [
@@ -31,11 +50,43 @@ const REFERENCES = {
             include: [
                 {
                     model: Hench,
-                    as: "hench_result"
+                    as: "hench_result",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Hench,
-                    as: "hench_left"
+                    as: "hench_left",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Item,
@@ -43,7 +94,23 @@ const REFERENCES = {
                 },
                 {
                     model: Hench,
-                    as: "hench_right"
+                    as: "hench_right",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Item,
@@ -58,11 +125,43 @@ const REFERENCES = {
             include: [
                 {
                     model: Hench,
-                    as: "hench_result"
+                    as: "hench_result",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Hench,
-                    as: "hench_left"
+                    as: "hench_left",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Item,
@@ -70,7 +169,23 @@ const REFERENCES = {
                 },
                 {
                     model: Hench,
-                    as: "hench_right"
+                    as: "hench_right",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Item,
@@ -85,11 +200,43 @@ const REFERENCES = {
             include: [
                 {
                     model: Hench,
-                    as: "hench_result"
+                    as: "hench_result",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Hench,
-                    as: "hench_left"
+                    as: "hench_left",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Item,
@@ -97,7 +244,23 @@ const REFERENCES = {
                 },
                 {
                     model: Hench,
-                    as: "hench_right"
+                    as: "hench_right",
+                    include: [
+                        {
+                            model: Zone,
+                            as: "zones",
+                            through: { attributes: [] }
+                        },
+                        {
+                            model: HenchType,
+                            as: "type",
+                        },
+                        {
+                            model: HenchStats,
+                            as: "stats",
+                            attributes: [ "hp", "mp", "attack", "power", "speed", "accuracy", "chance" ]
+                        },
+                    ],
                 },
                 {
                     model: Item,
@@ -144,10 +307,9 @@ export class HenchDAO {
     }
 
     static async searchByName(search = "", limit = DEFAULT_LIMIT ) {
-        log.debug(`Params: {search: ${search}, limit: ${limit}}`);
         let result = await Hench.findAll({
             limit: isNaN(limit) ? DEFAULT_LIMIT : limit,
-            where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), { [Op.like]: `%${search}%` }),
+            where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), { [Op.like]: `%${search.toLocaleLowerCase()}%` }),
             order: [
                 ['minimum_level', 'ASC'],
                 ['id', 'ASC']

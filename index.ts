@@ -2,7 +2,6 @@ import { APIManager } from "./src/Services/APIManager";
 import { HenchController } from "./src/Controller/HenchController";
 import { log } from "~/Services/Logger";
 import { Config } from "~/config/Config";
-import { TestController } from "~/Controller/TestController";
 import { ZoneController } from "~/Controller/ZoneController";
 
 log.info("API Started");

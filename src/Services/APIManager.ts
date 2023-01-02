@@ -1,4 +1,5 @@
 import express, { Express, json, NextFunction, Request, Response, Router, urlencoded } from "express";
+import cors from "cors";
 import { Controller } from "~/Utils/Controller";
 import { HTTPRequest } from "~/Utils/HTTPRequest";
 import { Route } from "../Utils/Route";
@@ -27,9 +28,24 @@ export class APIManager {
      * Init the API
      */
     init(): void {
+        const options: cors.CorsOptions = {
+              allowedHeaders: [
+                    'Origin',
+                    'X-Requested-With',
+                    'Content-Type',
+                    'Accept',
+                    'X-Access-Token',
+                ],
+                credentials: true,
+                methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+                origin: '*',
+                preflightContinue: false,
+        };
+
         this.app = express();
         this.app.use(urlencoded({ extended: true }));
         this.app.use(json());
+        this.app.use(cors(options));
 
         this.routerApiV1 = express.Router();
         this.app.listen(this.port, () => {

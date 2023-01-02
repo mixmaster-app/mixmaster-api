@@ -63,6 +63,8 @@ export class HenchController extends AbstractController {
             let limit: number = parseInt(req.query.limit?.toString() ?? "");
             return res.json(await HenchDAO.findAll( limit ));
         } catch(e) {
+            log.error(`Error while requesting every henchs, ${req.url}`);
+            log.error(e);
             return res.status(HTTPStatus._500_INTERNAL_SERVER_ERROR).send(DEFAULT_ERROR);
         }
     }
@@ -74,6 +76,8 @@ export class HenchController extends AbstractController {
             let search: string = req.params.search?.toString() ?? "";
             return res.json(await HenchDAO.searchByName( search, limit ));
         } catch(e) {
+            log.error(`Error while requesting henchs by name, ${req.url}`);
+            log.error(e);
             return res.status(HTTPStatus._500_INTERNAL_SERVER_ERROR).send(DEFAULT_ERROR);
         }
     }
@@ -83,6 +87,8 @@ export class HenchController extends AbstractController {
         try {
             return res.json(await HenchDAO.findOneById( parseInt(req.params.id) ));
         } catch(e) {
+            log.error(`Error while requesting one hench by its id, ${req.url}`);
+            log.error(e);
             return res.status(HTTPStatus._500_INTERNAL_SERVER_ERROR).send(DEFAULT_ERROR);
         }
     }
@@ -92,6 +98,8 @@ export class HenchController extends AbstractController {
         try {
             return res.json(await HenchDAO.findEvolutionsOfHench( parseInt(req.params.id) ));
         } catch(e) {
+            log.error(`Error while requesting every evolutions of a hench by its id, ${req.url}`);
+            log.error(e);
             return res.status(HTTPStatus._500_INTERNAL_SERVER_ERROR).send(DEFAULT_ERROR);
         }
     }
@@ -101,6 +109,8 @@ export class HenchController extends AbstractController {
         try {
             return res.json(await HenchDAO.findMixOfHench( parseInt(req.params.id) ));
         } catch(e) {
+            log.error(`Error while requesting every mix of a hench by its id, ${req.url}`);
+            log.error(e);
             return res.status(HTTPStatus._500_INTERNAL_SERVER_ERROR).send(DEFAULT_ERROR);
         }
     }
