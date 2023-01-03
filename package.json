@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "nodemon --watch . -e js,ts,json --exec \"ts-node index.ts\"",
-		"build": "tsup src/index.ts --format cjs --clean",
+		"build": "tsup index.ts --format cjs --clean",
 		"start-build": "node dist/index.js",
 		"swagger": "tsoa spec",
 		"test": "echo \"Error: no test specified\" && exit 1"
