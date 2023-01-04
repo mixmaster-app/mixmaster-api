@@ -35,6 +35,7 @@ export class APIManager {
                     'Content-Type',
                     'Accept',
                     'X-Access-Token',
+                    'Authorization'
                 ],
                 credentials: true,
                 methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
@@ -91,6 +92,8 @@ export class APIManager {
             case HTTPRequest.GET:
                 this.routerApiV1.get(`${route.getRoute()}`, (req: Request, res: Response, next: NextFunction) => {
                     try {
+                        // TODO: depending on the route and authorization, enable it or not
+                        log.debug(`Request from : ${req.headers.authorization}`);
                         return route.callback(req, res, next);
                     } catch(error) {
                         log.error(`Error on route ${route.getRoute()}`, error);
