@@ -11,8 +11,15 @@ export const Config = {
     Logger: {
         datePattern: "year-month-day hour:minute:second",
         doAppendToFile: true,
-        logPath: "./var/logs/",
-        filename: "logs.txt"
+        file: {
+            path: "./var/logs",
+            name: "mixapi.log",
+            options: {
+                maxSize: "25M",
+                interval: "1d",
+                compress: "gzip"
+            }
+        }
     },
     Database: {
         type: "mysql" as Dialect,

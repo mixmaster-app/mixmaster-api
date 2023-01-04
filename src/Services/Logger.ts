@@ -1,14 +1,30 @@
 import { ILogObject, Logger } from "tslog";
 import { Config } from "~/config/Config";
-import { appendFileSync, existsSync, mkdirSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 import path from "path";
+import { createStream } from "rotating-file-stream";
+
+const stream = createStream(path.join(Config.Logger.file.path, Config.Logger.file.name), Config.Logger.file.options)
 
 function logToFile(logObject: ILogObject) {
-    if(Config.Logger.doAppendToFile) {
-        if(!existsSync(Config.Logger.logPath)) {
-            mkdirSync(path.resolve(Config.Logger.logPath), { recursive: true });
+    let logLevel = logObject.logLevel.toUpperCase() + " ".repeat(5 - logObject.logLevel.length);
+    let logDateFormatted = logObject.date.toISOString();
+    let loggerName = logObject.loggerName;
+    let messageElements : string[] = [];
+    logObject.argumentsArray.forEach((item :any) => {
+        if(typeof item === 'object') {
+            messageElements.push(JSON.stringify(item))
         }
-        appendFileSync(path.join(Config.Logger.logPath, Config.Logger.filename), `${JSON.stringify(logObject)}\n`);
+        messageElements.push(item);
+    });
+    let logMessage = messageElements.join(', ');
+    const log = `${logDateFormatted} ${logLevel} [${loggerName}] ${logMessage}`;
+
+    if(Config.Logger.doAppendToFile) {
+        if(!existsSync(Config.Logger.file.path)) {
+            mkdirSync(path.resolve(Config.Logger.file.path), { recursive: true });
+        }
+        stream.write(`${log}\n`);
     }
 }
 
