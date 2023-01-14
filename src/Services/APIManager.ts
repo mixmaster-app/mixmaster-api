@@ -101,6 +101,9 @@ export class APIManager {
                     }
                 });
                 break;
+            case HTTPRequest.EXPOSE:
+                this.routerApiV1.use(`${route.getRoute()}`, express.static(`${route.callback()}`));
+                break;
             default:
                 log.warn(`Unsupported route type ${ route.getType() } for route ${ route.getRoute() }`);
                 break;
