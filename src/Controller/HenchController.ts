@@ -6,6 +6,7 @@ import { Controller } from "~/Utils/Controller";
 import { HTTPRequest } from "~/Utils/HTTPRequest";
 import { HTTPStatus } from "~/Utils/HTTPStatus";
 import { Route } from "~/Utils/Route";
+import { Parameter } from "~/Utils/Swagger/Parameter";
 import { AbstractController } from "./AbstractController";
 
 const DESCRIPTION = "Get informations about henchs";
@@ -23,6 +24,7 @@ export class HenchController extends AbstractController {
                 'description': "Get every henchs",
                 'type': HTTPRequest.GET,
                 'route': "/henchs",
+                'pathname': "/henchs",
                 'callback': this.getAll
             }),
             new Route({
@@ -30,36 +32,88 @@ export class HenchController extends AbstractController {
                 'description': "Get one hench by its id",
                 'type': HTTPRequest.GET,
                 'route': "/hench/:id",
+                'pathname': "/hench/{id}",
                 'callback': this.getOneById
-            }),
+            })
+            .addParameters([
+                (new Parameter())
+                    .setName("id")
+                    .setIn("path")
+                    .setRequired(true)
+            ]),
             new Route({
                 'label': "Search",
                 'description': "Search henchs by name",
                 'type': HTTPRequest.GET,
                 'route': "/hench/search/:search",
+                'pathname': "/hench/search/{search}",
                 'callback': this.search
-            }),
+            })
+            .addParameters([
+                (new Parameter())
+                    .setName("search")
+                    .setIn("path")
+                    .setRequired(true)
+            ]),
             new Route({
                 'label': "Filter",
                 'description': "Search henchs with filter",
                 'type': HTTPRequest.GET,
                 'route': "/hench/filter/:search",
+                'pathname': "/hench/filter/{search}",
                 'callback': this.filter
-            }),
+            })
+            .addParameters([
+                (new Parameter())
+                    .setName("search")
+                    .setIn("path")
+                    .setRequired(true),
+                (new Parameter())
+                    .setName("limit")
+                    .setIn("query")
+                    .setRequired(false),
+                (new Parameter())
+                    .setName("types")
+                    .setIn("query")
+                    .setRequired(false),
+                (new Parameter())
+                    .setName("minimumLevel")
+                    .setIn("query")
+                    .setRequired(false),
+                (new Parameter())
+                    .setName("maximumLevel")
+                    .setIn("query")
+                    .setRequired(false),
+            ])
+            ,
             new Route({
                 'label': "GetEvolutionsOfHenchById",
                 'description': "Get every evolutions of a hench by its id",
                 'type': HTTPRequest.GET,
                 'route': "/hench/:id/evolutions",
+                'pathname': "/hench/{id}/evolutions",
                 'callback': this.getEvolutionsOfHenchById
-            }),
+            })
+            .addParameters([
+                (new Parameter())
+                    .setName("id")
+                    .setIn("path")
+                    .setRequired(true)
+            ]),
             new Route({
                 'label': "GetMixOfHenchById",
                 'description': "Get every mixs of a hench by its id",
                 'type': HTTPRequest.GET,
                 'route': "/hench/:id/mixs",
+                'pathname': "/hench/{id}/mixs",
                 'callback': this.getMixOfHenchById
             })
+            .addParameters([
+                (new Parameter())
+                    .setName("id")
+                    .setIn("path")
+                    .setRequired(true)
+            ]),
         ]);
         return this.controller;
     }

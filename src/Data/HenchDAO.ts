@@ -281,12 +281,12 @@ class HenchDAO {
 
     static async findMixOfHench(id: number) {
         let result = await this.findOneById(id);
-        return result?.mix;
+        return result?.mix ?? [];
     }
 
     static async findEvolutionsOfHench(id: number) {
         let result = await this.findOneById(id);
-        return result?.evolutions;
+        return result?.evolutions ?? [];
     }
 
     static async searchByName(search = "", limit = DEFAULT_LIMIT ) {
