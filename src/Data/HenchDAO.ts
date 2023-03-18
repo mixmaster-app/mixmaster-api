@@ -1,4 +1,4 @@
-import { Op, Sequelize } from "sequelize";
+import { Op, Sequelize, WhereOptions } from "sequelize";
 import { Hench } from "~/Models/Henchs/Hench";
 import { HenchMix } from "~/Models/Henchs/HenchMix";
 import { HenchStats } from "~/Models/Henchs/HenchStats";
@@ -254,9 +254,9 @@ const REFERENCES = {
     ]
 };
 
-const DEFAULT_LIMIT = 30;
+const DEFAULT_LIMIT = 3000;
 
-export class HenchDAO {
+class HenchDAO {
 
     static async findAll(limit: number) {
         let result = await Hench.findAll({
@@ -302,4 +302,34 @@ export class HenchDAO {
         return fusionEvolutionsList(result);
     }
 
+    static async filterHench(filters : {search: string, limit: number, types: Array<string>, minimumLevel: number, maximumLevel: number}) {
+        let whereFilter: WhereOptions = [];
+        if(filters.types.length > 0) {
+            whereFilter.push(Sequelize.where(Sequelize.col('type_id'), { [Op.in]: filters.types }));
+        }
+        whereFilter.push(
+            Sequelize.where(Sequelize.col('minimum_level'), { [Op.gte]: filters.minimumLevel }),
+            Sequelize.where(Sequelize.col('maximum_level'), { [Op.lte]: filters.maximumLevel })
+        );
+
+        let result = await Hench.findAll({
+            limit: isNaN(filters.limit) ? DEFAULT_LIMIT : filters.limit,
+            where: [
+                Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), { [Op.like]: `%${filters.search.toLocaleLowerCase()}%` }),
+                ...whereFilter
+            ],
+            order: [
+                ['minimum_level', 'ASC'],
+                ['id', 'ASC']
+            ],
+            include: REFERENCES.include
+        });
+        return fusionEvolutionsList(result);
+    }
+
 }
+
+export {
+    DEFAULT_LIMIT,
+    HenchDAO
+};
