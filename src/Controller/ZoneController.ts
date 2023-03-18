@@ -23,6 +23,7 @@ export class ZoneController extends AbstractController {
                 'description': "Get every zones",
                 'type': HTTPRequest.GET,
                 'route': "/zones",
+                'pathname': "/zones",
                 'callback': this.getAll
             })
         ]);

@@ -50,7 +50,7 @@ export class Swagger {
     setExternalDocs(externalDocs: ExternalDocumentation): Swagger { this.externalDocs = externalDocs; return this; }
 
     addPath(route: Route, path: Path): Swagger {
-        const pathname = route.getRoute();
+        const pathname = route.getPathname();
         const routeType = route.getType();
 
         if(!this.paths[pathname]) {

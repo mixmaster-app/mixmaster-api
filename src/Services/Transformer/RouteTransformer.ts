@@ -9,6 +9,7 @@ export function RouteToPath(route: Route, tag: string): Path {
         .addtag(tag)
         .setSummary(route.getDescription())
         .setOperationId(route.getLabel())
+        .setParameters(route.getParameters())
     ;
 
     path.addOperation(route.getType(), operation);

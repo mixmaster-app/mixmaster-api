@@ -26,6 +26,7 @@ export class TestController extends AbstractController {
                 'description': "Test route",
                 'type': HTTPRequest.GET,
                 'route': "/test",
+                'pathname': "/test",
                 'callback': this.test
             })
         ]);
